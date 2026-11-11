@@ -15,9 +15,10 @@ object ContributionRenderer {
     private val LIGHT = listOf("EBEDF0", "9BE9A8", "40C463", "30A14E", "216E39").map { Color.parseColor("#$it") }
     private val DARK = listOf("161B22", "0E4429", "006D32", "26A641", "39D353").map { Color.parseColor("#$it") }
 
-    // GitHub 原生观感：不透明卡片底色让 level0/1 空格子可辨；月份标签色
+    // GitHub 原生观感：不透明卡片底色 + 空格子描边让 level0/1 可辨；月份标签色
     private val BG = intArrayOf(Color.WHITE, 0xFF0D1117.toInt())
     private val LABEL = intArrayOf(0xFF767676.toInt(), 0xFF7D8590.toInt())
+    private val EMPTY_STROKE = intArrayOf(0xFFD0D7DE.toInt(), 0xFF30363D.toInt())
     private val MONTHS = arrayOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
     /** 渲染 cells（按日期升序）到 w×h Bitmap；spanWeeks=0 按宽高比自动适配显示最近列，>0 固定周数 */
@@ -31,7 +32,7 @@ object ContributionRenderer {
         val totalCols = (cells.size + rows - 1) / rows
 
         // 顶部预留月份标签带；格子过小时标签省略
-        val labelH = (h * 0.13f).toInt()
+        val labelH = (h * 0.15f).toInt()
         val availH = if (labelH >= 16) h - labelH else h
         val showLabels = availH != h
 
@@ -56,16 +57,26 @@ object ContributionRenderer {
         val gap = (size * gapRatio).toInt().coerceAtLeast(1)
 
         val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        bitmap.eraseColor(bg)
+        bitmap.eraseColor(Color.TRANSPARENT)
         val canvas = Canvas(bitmap)
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
         val radius = size * 0.22f
+        val cardRadius = minOf(w, h) * 0.07f
+        paint.color = bg
+        canvas.drawRoundRect(0f, 0f, w.toFloat(), h.toFloat(), cardRadius, cardRadius, paint)
+        paint.style = Paint.Style.FILL_AND_STROKE
 
         val gridW = displayCols * size + (displayCols - 1) * gap
         val gridH = rows * size + (rows - 1) * gap
         val ox = ((w - gridW) / 2f)
         val oy = ((h - gridH) / 2f).coerceAtLeast(labelH.toFloat())
 
+        val strokeW = maxOf(1f, size * 0.07f)
+        val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            setColor(EMPTY_STROKE[if (dark) 1 else 0])
+            strokeWidth = strokeW
+        }
         for ((i, cell) in sub.withIndex()) {
             val col = i / rows
             val row = i % rows
@@ -73,6 +84,7 @@ object ContributionRenderer {
             val y = oy + row * (size + gap)
             paint.color = palette[cell.level.coerceIn(0, palette.size - 1)]
             canvas.drawRoundRect(x, y, x + size, y + size, radius, radius, paint)
+            if (cell.level == 0) canvas.drawRoundRect(x, y, x + size, y + size, radius, radius, strokePaint)
         }
 
         if (showLabels && size >= 6) drawMonthLabels(canvas, sub, size, gap, ox, labelH, labelColor, displayCols, rows)
@@ -90,7 +102,7 @@ object ContributionRenderer {
         }
         val labelColorPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             setColor(labelPaintColor)
-            textSize = (size * 0.9f).coerceIn(9f, 18f)
+            textSize = (size * 1.05f).coerceIn(10f, 22f)
         }
         val baseline = labelH * 0.62f
         var lastEnd = -1f
