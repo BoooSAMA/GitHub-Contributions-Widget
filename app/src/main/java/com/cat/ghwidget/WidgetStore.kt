@@ -22,6 +22,9 @@ object WidgetStore {
     private const val KEY_MARGIN = "margin_pct"
     private const val KEY_CONTRAST = "contrast_pct"
     private const val KEY_GLASS = "glass_enabled"
+    private const val KEY_MONTH_MODE = "month_mode"
+    private const val KEY_MONTH_COLOR = "month_color"
+    private const val KEY_MONTH_SCALE = "month_scale"
     private const val CACHE_FILE = "gh_graph.png"
 
     const val THEME_SYSTEM = 0
@@ -116,6 +119,30 @@ object WidgetStore {
             .edit().putBoolean(KEY_GLASS, on).apply()
     }
 
+    fun monthMode(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_MONTH_MODE, BG_AUTO)
+
+    fun setMonthMode(ctx: Context, mode: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_MONTH_MODE, mode).apply()
+    }
+
+    fun monthColor(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_MONTH_COLOR, 0xFF767676.toInt())
+
+    fun setMonthColor(ctx: Context, color: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_MONTH_COLOR, color).apply()
+    }
+
+    fun monthScale(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_MONTH_SCALE, 105)
+
+    fun setMonthScale(ctx: Context, pct: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_MONTH_SCALE, pct).apply()
+    }
+
     /** 汇总全部客制化设置为渲染配置；dark 由调用方按当前主题传入 */
     fun renderConfig(ctx: Context, dark: Boolean): RenderConfig {
         val mode = bgMode(ctx)
@@ -133,7 +160,9 @@ object WidgetStore {
             strokePct = strokePct(ctx) / 100f,
             contrast = contrastPct(ctx) / 100f,
             marginPct = marginPct(ctx) / 100f,
-            cardBg = bg
+            cardBg = bg,
+            monthColor = if (monthMode(ctx) == BG_AUTO) null else monthColor(ctx),
+            monthScale = monthScale(ctx) / 100f
         )
     }
 

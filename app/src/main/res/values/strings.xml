@@ -31,6 +31,10 @@
     <string name="label_margin">卡牌边距：%1$d%%</string>
     <string name="label_contrast">空格子对比度：%1$d%%</string>
     <string name="label_glass">毛玻璃底框</string>
+    <string name="label_month_color">月份文字颜色</string>
+    <string name="label_monthscale">月份字号：%1$d%%</string>
+    <string name="month_gray">中灰</string>
+    <string name="month_slate">石板灰</string>
     <string name="bg_auto">跟随主题</string>
     <string name="bg_trans">纯透明</string>
     <string name="bg_white">纯白</string>

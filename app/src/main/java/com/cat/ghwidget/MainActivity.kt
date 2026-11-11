@@ -32,6 +32,7 @@ class MainActivity : Activity() {
     private lateinit var llSpanPills: LinearLayout
     private lateinit var llBgPills: LinearLayout
     private lateinit var llGlassPills: LinearLayout
+    private lateinit var llMonthPills: LinearLayout
 
     override fun attachBaseContext(base: Context) {
         val mode = WidgetStore.themeMode(base)
@@ -58,6 +59,7 @@ class MainActivity : Activity() {
         llSpanPills = findViewById(R.id.ll_span_pills)
         llBgPills = findViewById(R.id.ll_bg_pills)
         llGlassPills = findViewById(R.id.ll_glass_pills)
+        llMonthPills = findViewById(R.id.ll_month_pills)
         setupSliders()
 
         input.setText(WidgetStore.username(this))
@@ -259,9 +261,12 @@ class MainActivity : Activity() {
             if (idx >= 0) idx + 2 else -1
         } else if (WidgetStore.bgMode(this) == WidgetStore.BG_TRANS) 1 else 0
         buildPills(llBgPills, bgLabels, bgSel) { index ->
-            WidgetStore.setBgMode(this, bgOptions[index])
-            if (bgOptions[index] != WidgetStore.BG_AUTO && bgOptions[index] != WidgetStore.BG_TRANS) {
-                WidgetStore.setBgColor(this, bgOptions[index])
+            val opt = bgOptions[index]
+            if (opt == WidgetStore.BG_AUTO || opt == WidgetStore.BG_TRANS) {
+                WidgetStore.setBgMode(this, opt)
+            } else {
+                WidgetStore.setBgMode(this, WidgetStore.BG_FIXED)
+                WidgetStore.setBgColor(this, opt)
             }
             buildAppearanceSection()
             rebuildPreview()
@@ -277,6 +282,50 @@ class MainActivity : Activity() {
                 refreshWidgets()
             }
         }
+
+        val monthOptions = intArrayOf(
+            WidgetStore.BG_AUTO, 0xFF767676.toInt(), 0xFF4E5A64.toInt(),
+            0xFFFFFFFF.toInt(), 0xFF000000.toInt()
+        )
+        val monthLabels = listOf(
+            getString(R.string.bg_auto), getString(R.string.month_gray),
+            getString(R.string.month_slate), getString(R.string.bg_white), getString(R.string.bg_black)
+        )
+        val monthSel = if (WidgetStore.monthMode(this) == WidgetStore.BG_AUTO) 0
+        else {
+            val idx = monthOptions.drop(1).indexOf(WidgetStore.monthColor(this))
+            if (idx >= 0) idx + 1 else -1
+        }
+        buildPills(llMonthPills, monthLabels, monthSel) { index ->
+            val opt = monthOptions[index]
+            if (opt == WidgetStore.BG_AUTO) {
+                WidgetStore.setMonthMode(this, WidgetStore.BG_AUTO)
+            } else {
+                WidgetStore.setMonthMode(this, WidgetStore.BG_FIXED)
+                WidgetStore.setMonthColor(this, opt)
+            }
+            buildAppearanceSection()
+            rebuildPreview()
+            refreshWidgets()
+        }
+
+        val sbMonth = findViewById<SeekBar>(R.id.sb_monthscale)
+        val tvMonth = findViewById<TextView>(R.id.tv_monthscale_label)
+        val updateMonthLabel = { v: Int ->
+            tvMonth.text = getString(R.string.label_monthscale, v)
+        }
+        sbMonth.progress = WidgetStore.monthScale(this).coerceIn(60, 200)
+        updateMonthLabel(sbMonth.progress)
+        sbMonth.setOnSeekBarChangeListener(sliderListener(
+            onChange = { v ->
+                WidgetStore.setMonthScale(this, v)
+                updateMonthLabel(v)
+            },
+            onCommit = {
+                rebuildPreview()
+                refreshWidgets()
+            }
+        ))
     }
 
     private fun buildPills(container: LinearLayout, labels: List<String>, selected: Int, onSelect: (Int) -> Unit) {

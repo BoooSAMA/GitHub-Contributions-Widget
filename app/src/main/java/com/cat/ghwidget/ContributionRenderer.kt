@@ -13,7 +13,11 @@ data class RenderConfig(
     val contrast: Float = 0f,
     val marginPct: Float = 0f,
     /** null = 跟随主题的 GitHub 卡片色；否则用此 ARGB（alpha 0 = 纯透明底） */
-    val cardBg: Int? = null
+    val cardBg: Int? = null,
+    /** null = 跟随主题的 GitHub 月份灰；否则固定色 */
+    val monthColor: Int? = null,
+    /** 月份字号相对格子尺寸的倍率（1.05 = GitHub 观感） */
+    val monthScale: Float = 1.05f
 )
 
 /**
@@ -135,7 +139,10 @@ object ContributionRenderer {
             if (cell.level == 0) strokePaint?.let { canvas.drawRoundRect(x, y, x + size, y + size, radius, radius, it) }
         }
 
-        if (showLabels && size >= 6) drawMonthLabels(canvas, sub, size, gap, ox, labelH, LABEL[if (dark) 1 else 0], displayCols, rows)
+        if (showLabels && size >= 6) {
+            val mColor = cfg.monthColor ?: LABEL[if (dark) 1 else 0]
+            drawMonthLabels(canvas, sub, size, gap, ox, labelH, mColor, displayCols, cfg.monthScale)
+        }
         canvas.restore()
         return bitmap
     }
@@ -143,15 +150,15 @@ object ContributionRenderer {
     /** 月份标签画在每月首列上方，与上一标签重叠时跳过（GitHub 同款处理） */
     private fun drawMonthLabels(
         canvas: Canvas, sub: List<GithubGraphFetcher.Cell>, size: Int, gap: Int,
-        ox: Float, labelH: Int, labelPaintColor: Int, displayCols: Int, rows: Int
+        ox: Float, labelH: Int, labelPaintColor: Int, displayCols: Int, scale: Float
     ) {
         val firstCol = mutableMapOf<String, Int>()
         sub.forEachIndexed { i, cell ->
-            firstCol.putIfAbsent(cell.date.take(7), i / rows)
+            firstCol.putIfAbsent(cell.date.take(7), i / 7)
         }
         val labelColorPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             setColor(labelPaintColor)
-            textSize = (size * 1.05f).coerceIn(10f, 22f)
+            textSize = (size * scale).coerceIn(6f, 40f)
         }
         val baseline = labelH * 0.62f
         var lastEnd = -1f
