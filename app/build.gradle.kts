@@ -11,8 +11,8 @@ android {
         applicationId = "com.cat.ghwidget"
         minSdk = 29          // Android 10+
         targetSdk = 34
-        versionCode = 8
-        versionName = "0.0.8"
+        versionCode = 10
+        versionName = "0.0.10"
     }
 
     // 已生成的本地签名（密码固定，仅个人分发用）
