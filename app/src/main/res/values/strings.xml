@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">GitHub 绿墙</string>
+    <string name="widget_name">GitHub 绿墙</string>
+    <string name="widget_desc">GitHub 贡献热力图小组件，自动刷新</string>
+    <!-- ⚠️ 改成你自己的 GitHub 用户名 -->
+    <string name="github_username" translatable="false">cat</string>
+    <string name="status_no_data">等待网络…\n稍后自动加载</string>
+    <string name="hint_user">当前账号：@%s</string>
+    <string name="hint_install">安装成功！添加小组件：\n\n长按桌面空白处 → 小部件（小组件）→ 找到「GitHub 绿墙」拖到桌面。\n\n· 数据每 6 小时自动刷新\n· 点击小组件打开你的 GitHub 主页\n· 跟随系统深色模式自动换色\n· 修改 GitHub 用户名：app/src/main/res/values/strings.xml → github_username</string>
+</resources>

@@ -1,0 +1,39 @@
+# ===== AI 工具相关（禁止上传） =====
+.omo/
+.codegraph
+.opencode/
+.cursor/
+.windsurf/
+.claude/
+.gemini/
+.aider*
+CLAUDE.md
+AGENTS.md
+.codex/
+.continue/
+.mcp.json
+
+# ===== Android / Gradle =====
+build/
+.gradle/
+local.properties
+captures/
+.cxx/
+.kotlin/
+.externalNativeBuild/
+
+# ===== 签名密钥（含密码，禁止上传） =====
+*.jks
+*.keystore
+
+# ===== IDE =====
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# ===== 系统与其他 =====
+.DS_Store
+*.log
+*.apk

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 绿底圆角方块 -->
+    <path
+        android:fillColor="#30A14E"
+        android:pathData="M12,12 h84 a8,8 0 0 1 8,8 v68 a8,8 0 0 1 -8,8 h-84 a8,8 0 0 1 -8,-8 v-68 a8,8 0 0 1 8,-8 z" />
+    <!-- 模拟格子 -->
+    <path android:fillColor="#B4F5C3" android:pathData="M24,24 h12 v12 h-12 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M42,24 h12 v12 h-12 z" />
+    <path android:fillColor="#1A7F37" android:pathData="M60,24 h12 v12 h-12 z" />
+    <path android:fillColor="#B4F5C3" android:pathData="M24,42 h12 v12 h-12 z" />
+    <path android:fillColor="#1A7F37" android:pathData="M42,42 h12 v12 h-12 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M60,42 h12 v12 h-12 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M24,60 h12 v12 h-12 z" />
+    <path android:fillColor="#B4F5C3" android:pathData="M42,60 h12 v12 h-12 z" />
+    <path android:fillColor="#1A7F37" android:pathData="M60,60 h12 v12 h-12 z" />
+</vector>

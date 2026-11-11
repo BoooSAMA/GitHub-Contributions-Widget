@@ -1,0 +1,6 @@
+<resources>
+    <!-- 卡片背景：深色模式半透明深灰 -->
+    <color name="widget_bg">#521E1E1E</color>
+    <color name="widget_stroke">#26AAAAAA</color>
+    <color name="widget_text">#B3FFFFFF</color>
+</resources>

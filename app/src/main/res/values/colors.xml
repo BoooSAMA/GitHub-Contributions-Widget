@@ -1,0 +1,6 @@
+<resources>
+    <!-- 卡片背景：浅色模式半透明白 -->
+    <color name="widget_bg">#66FFFFFF</color>
+    <color name="widget_stroke">#26888888</color>
+    <color name="widget_text">#B3000000</color>
+</resources>
