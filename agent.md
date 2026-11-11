@@ -17,11 +17,11 @@
 ## 能做什么（当前功能）
 
 - 桌面显示 52 周 × 7 格的贡献热力图，Canvas 圆角方块绘制
+- **app 内配置**：输入 GitHub 用户名 → 实时预览 → 保存并立即刷新所有小组件（无需改代码重打包）
 - 每 6 小时自动刷新；拖动缩放小组件时按新尺寸重绘
-- 浅色/深色模式自动切换（色板在 `ContributionRenderer.kt`，卡片底色在 `res/values-night/`）
+- 浅色/深色模式自动切换（色板在 `ContributionRenderer.kt`，App 语义色在 `res/values[-night]/colors.xml`）
 - 点击小组件打开用户 GitHub 主页（PendingIntent）
 - 最近渲染图本地缓存，离线兜底显示
-- 安装成功提示页 `MainActivity`（无业务逻辑）
 
 ## 关键文件
 
@@ -31,7 +31,7 @@
 | `ContributionRenderer.kt` | Canvas 绘制，浅/深色板 |
 | `WidgetStore.kt` | prefs 存数据、cacheDir 存最近渲染图 |
 | `GithubWidgetProvider.kt` | 组件入口：先缓存秒显 → 后台刷新 → 回主线程更新 |
-| `res/values/strings.xml` | **`github_username` 在这里改**（唯一必改项） |
+| `res/values/strings.xml` | 默认用户名 `github_username`（用户也可在 app 内直接修改） |
 
 ## 构建与安装
 

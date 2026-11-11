@@ -36,13 +36,11 @@ adb install app/build/outputs/apk/release/app-release.apk
 
 ## 配置你的 GitHub 用户名
 
-改一处即可：`app/src/main/res/values/strings.xml`
+装好后直接在 app 里配置，**无需改代码重新打包**：
 
-```xml
-<string name="github_username" translatable="false">你的用户名</string>
-```
+打开「GitHub 绿墙」→ 输入你的用户名 → 点「预览并应用」→ 绿墙立即生成并刷新小组件。
 
-改完重新构建打包：`./gradlew assembleRelease`。
+> 默认用户名仍可改代码预设：`app/src/main/res/values/strings.xml` → `github_username`
 
 ## 自己构建
 

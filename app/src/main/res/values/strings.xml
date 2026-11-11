@@ -2,9 +2,22 @@
     <string name="app_name">GitHub 绿墙</string>
     <string name="widget_name">GitHub 绿墙</string>
     <string name="widget_desc">GitHub 贡献热力图小组件，自动刷新</string>
-    <!-- ⚠️ 改成你自己的 GitHub 用户名 -->
+    <!-- 默认用户名：首次打开也可在界面里直接修改并保存 -->
     <string name="github_username" translatable="false">cat</string>
+
     <string name="status_no_data">等待网络…\n稍后自动加载</string>
-    <string name="hint_user">当前账号：@%s</string>
-    <string name="hint_install">安装成功！添加小组件：\n\n长按桌面空白处 → 小部件（小组件）→ 找到「GitHub 绿墙」拖到桌面。\n\n· 数据每 6 小时自动刷新\n· 点击小组件打开你的 GitHub 主页\n· 跟随系统深色模式自动换色\n· 修改 GitHub 用户名：app/src/main/res/values/strings.xml → github_username</string>
+
+    <!-- 配置页 -->
+    <string name="subtitle">免登录 · 输入 GitHub 用户名，即刻预览贡献绿墙并绑定桌面小组件</string>
+    <string name="label_username">GitHub 用户名</string>
+    <string name="hint_username">例如：torvalds</string>
+    <string name="label_preview">预览</string>
+    <string name="btn_apply">预览并应用</string>
+    <string name="btn_loading">加载中…</string>
+    <string name="status_idle">尚未应用。输入用户名后点击上方按钮即可预览。</string>
+    <string name="msg_need_username">请输入 GitHub 用户名</string>
+    <string name="msg_fail">抓取失败：请检查用户名是否正确、网络是否可用</string>
+    <string name="msg_empty_user">该账号暂无公开贡献数据</string>
+    <string name="msg_saved">已应用：@%s\n桌面小组件已刷新（若无小组件，长按桌面 → 小部件 → 添加）</string>
+    <string name="help_text">使用说明\n\n1. 打开桌面上的「GitHub 绿墙」，输入你的用户名\n2. 点击「预览并应用」，绿墙立即生成\n3. 长按桌面空白处 → 小部件 → 拖入「GitHub 绿墙」\n\n· 数据每 6 小时自动刷新，无需登录 GitHub\n· 点击小组件直接打开你的 GitHub 主页\n· 深色模式下自动切换配色</string>
 </resources>

@@ -36,13 +36,11 @@ Open the project → enable USB debugging on your phone → press Run.
 
 ## Configure Your GitHub Username
 
-One change required: `app/src/main/res/values/strings.xml`
+No code change or rebuild needed — configure it right in the app:
 
-```xml
-<string name="github_username" translatable="false">your-username</string>
-```
+Open "GitHub 绿墙" → enter your username → tap "Preview & Apply" → the graph is generated instantly and the widget refreshes.
 
-Then rebuild: `./gradlew assembleRelease`.
+> Optional: preset a default username in `app/src/main/res/values/strings.xml` → `github_username`.
 
 ## Building
 

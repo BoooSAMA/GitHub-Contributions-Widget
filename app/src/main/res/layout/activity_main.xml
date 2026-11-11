@@ -1,32 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:fillViewport="true"
+    android:background="@color/app_bg"
+    android:scrollbars="none">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorPrimary" />
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <TextView
-        android:id="@+id/tv_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="15sp"
-        android:textColor="?android:attr/textColorSecondary" />
+        <!-- 品牌区 -->
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/ic_launcher"
+            android:importantForAccessibility="no" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:lineSpacingExtra="4dp"
-        android:textSize="15sp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:text="@string/hint_install" />
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/app_name"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/subtitle"
+            android:textSize="14sp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/text_secondary" />
+
+        <!-- 输入卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/bg_card">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_username"
+                android:textSize="14sp"
+                android:textColor="@color/text_primary" />
+
+            <EditText
+                android:id="@+id/et_username"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_input"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:hint="@string/hint_username"
+                android:inputType="textNoSuggestions|textVisiblePassword"
+                android:maxLines="1"
+                android:importantForAutofill="no"
+                android:textSize="15sp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+            <TextView
+                android:id="@+id/tv_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textSize="13sp"
+                android:textColor="@color/error"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_apply"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_button_primary"
+                android:stateListAnimator="@null"
+                android:text="@string/btn_apply"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/on_primary"
+                android:textAllCaps="false" />
+        </LinearLayout>
+
+        <!-- 预览卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/bg_card">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_preview"
+                android:textSize="14sp"
+                android:textColor="@color/text_primary" />
+
+            <ImageView
+                android:id="@+id/img_preview"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_marginTop="12dp"
+                android:scaleType="fitCenter"
+                android:importantForAccessibility="no" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="13sp"
+                android:lineSpacingExtra="2dp"
+                android:textColor="@color/text_secondary" />
+        </LinearLayout>
+
+        <!-- 使用说明 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/help_text"
+            android:textSize="13sp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="@color/text_secondary" />
+    </LinearLayout>
+</ScrollView>
