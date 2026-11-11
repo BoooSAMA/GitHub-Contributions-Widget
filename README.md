@@ -66,15 +66,75 @@ adb install app/build/outputs/apk/release/app-release.apk
 ./gradlew assembleRelease   # 发布包 → app/build/outputs/apk/release/（已签名）
 ```
 
-## 架构
+## 文件架构
 
 ```
-app/src/main/java/com/cat/ghwidget/
-├── GithubGraphFetcher.kt    # OkHttp 免登录抓取 + 正则解析 data-date/data-level
-├── ContributionRenderer.kt  # Canvas 圆角方块绘制，浅/深双主题色板 + RenderConfig 客制化参数
-├── WidgetStore.kt           # 数据与全部客制化设置存 SharedPreferences，最近渲染图存缓存
-├── GithubWidgetProvider.kt  # 组件入口：缓存秒显 → 后台刷新 → 主线程更新
-└── MainActivity.kt          # 配置页：用户名 + 全部外观客制化
+GitHub-Contributions-Widget/
+├── app/
+│   ├── build.gradle.kts              # 构建配置：minSdk 29 / targetSdk 34、版本号、签名、依赖
+│   ├── proguard-rules.pro            # R8 混淆规则
+│   ├── signing/release.jks           # release 签名密钥（不入库）
+│   └── src/main/
+│       ├── AndroidManifest.xml       # 组件注册：MainActivity + AppWidgetProvider
+│       ├── java/com/cat/ghwidget/
+│       │   ├── GithubGraphFetcher.kt    # 抓取 github.com/users/<name>/contributions，
+│       │   │                            #   正则兼容 SVG <rect> 与 HTML <td> 两种页面结构
+│       │   ├── ContributionRenderer.kt  # ★ 小组件主体视觉：Canvas 绘制格子 / 圆角 / 描边 /
+│       │   │                            #   月份标签 / 卡牌底 / 对比度，全部由 RenderConfig 驱动
+│       │   ├── WidgetStore.kt           # SharedPreferences 持久化：格子数据、用户名、
+│       │   │                            #   全部客制化设置、最近渲染图缓存
+│       │   ├── GithubWidgetProvider.kt  # 小组件生命周期：缓存秒显 → 后台刷新 → 尺寸变化重绘
+│       │   └── MainActivity.kt          # ★ app 界面逻辑：用户名配置、预览、
+│       │                                #   主题/跨度/滑条/pill 等全部设置项
+│       └── res/
+│           ├── layout/activity_main.xml     # ★ app 界面布局（卡片、输入框、设置项）
+│           ├── layout/widget_github.xml     # ★ 小组件容器布局（ImageView + 毛玻璃底框）
+│           ├── values/colors.xml            # ★ 浅色主题语义色 token
+│           ├── values-night/colors.xml      # ★ 深色主题语义色 token
+│           ├── values/strings.xml           # ★ 全部界面文案与默认用户名
+│           ├── drawable/
+│           │   ├── widget_background.xml    # ★ 小组件毛玻璃底框
+│           │   ├── bg_card.xml              # app 内卡片背景
+│           │   ├── bg_input.xml             # 输入框背景
+│           │   ├── bg_button_primary.xml    # 主按钮背景
+│           │   ├── pill_bg.xml / pill_bg_active.xml  # 选项 pill 样式（普通 / 选中）
+│           │   ├── ic_launcher.xml          # 桌面图标（108dp 对角渐变矢量）
+│           │   ├── ic_launcher_bg.xml       # 自适应图标背景层
+│           │   └── ic_launcher_fg.xml       # 自适应图标前景层
+│           ├── mipmap-anydpi-v26/ic_launcher.xml  # 自适应图标声明
+│           └── xml/github_widget_info.xml   # 小组件元信息：默认尺寸、6 小时刷新、可缩放
+├── README.md / README_EN.md
+└── agent.md                          # 项目定位与制作意向（未来 agent 行为约束）
+```
+
+### 想改 UI？看这张表
+
+| 想改什么 | 改哪个文件 |
+|----------|-----------|
+| 小组件里绿墙本身的样子（格子、间距、圆角、描边、月份标签、配色算法） | `ContributionRenderer.kt` |
+| 小组件的外框形态（毛玻璃、内边距、整体布局） | `res/layout/widget_github.xml` + `res/drawable/widget_background.xml` |
+| 小组件尺寸、刷新周期、能否缩放 | `res/xml/github_widget_info.xml` |
+| app 界面的控件排布 / 增加设置项 | `res/layout/activity_main.xml` + `MainActivity.kt` |
+| 深浅两套配色 | `res/values/colors.xml` / `res/values-night/colors.xml` |
+| 所有文案、默认用户名 | `res/values/strings.xml` |
+| 按钮 / 输入框 / pill 的样式 | `res/drawable/bg_*.xml`、`pill_bg*.xml` |
+| app 图标 | `res/drawable/ic_launcher*.xml` |
+| 版本号 | `app/build.gradle.kts` → `versionCode` / `versionName` |
+
+### 数据流
+
+```
+GitHub 公开页面 ──► GithubGraphFetcher（抓取 + 解析）
+                          │
+                          ▼
+                   WidgetStore（SharedPreferences：格子 + 设置）
+                          │
+        ┌─────────────────┴──────────────────┐
+        ▼                                    ▼
+ContributionRenderer（按 RenderConfig 渲染）   MainActivity（预览 + 修改设置）
+        │                                    │
+        ▼                                    ▼
+GithubWidgetProvider ──RemoteViews──► 桌面小组件（ImageView 显示 Bitmap）
 ```
 
 唯一第三方依赖：`com.squareup.okhttp3:okhttp:4.12.0`。
