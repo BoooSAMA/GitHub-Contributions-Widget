@@ -32,11 +32,11 @@ object ContributionRenderer {
 
     // 对比度增强的目标色：空格子/level1/描边从 GitHub 原色向更可辨的颜色插值
     private val L0_FROM = intArrayOf(0xFFEBEDF0.toInt(), 0xFF161B22.toInt())
-    private val L0_TO = intArrayOf(0xFFD0D7DE.toInt(), 0xFF3D444D.toInt())
+    private val L0_TO = intArrayOf(0xFFC9D1D9.toInt(), 0xFF4E5A64.toInt())
     private val L1_FROM = intArrayOf(0xFF9BE9A8.toInt(), 0xFF0E4429.toInt())
-    private val L1_TO = intArrayOf(0xFF8CD998.toInt(), 0xFF1A6B3A.toInt())
+    private val L1_TO = intArrayOf(0xFF8CD998.toInt(), 0xFF1F7139.toInt())
     private val STROKE_FROM = intArrayOf(0xFFD0D7DE.toInt(), 0xFF30363D.toInt())
-    private val STROKE_TO = intArrayOf(0xFFB4BEC8.toInt(), 0xFF4D5560.toInt())
+    private val STROKE_TO = intArrayOf(0xFFA8B2BC.toInt(), 0xFF5A6670.toInt())
     private val MONTHS = arrayOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
     private fun blend(from: Int, to: Int, t: Float): Int {

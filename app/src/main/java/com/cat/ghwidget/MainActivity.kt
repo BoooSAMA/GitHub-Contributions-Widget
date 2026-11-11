@@ -263,6 +263,7 @@ class MainActivity : Activity() {
             if (bgOptions[index] != WidgetStore.BG_AUTO && bgOptions[index] != WidgetStore.BG_TRANS) {
                 WidgetStore.setBgColor(this, bgOptions[index])
             }
+            buildAppearanceSection()
             rebuildPreview()
             refreshWidgets()
         }
@@ -272,6 +273,7 @@ class MainActivity : Activity() {
             val on = index == 0
             if (on != WidgetStore.glassEnabled(this)) {
                 WidgetStore.setGlassEnabled(this, on)
+                buildAppearanceSection()
                 refreshWidgets()
             }
         }

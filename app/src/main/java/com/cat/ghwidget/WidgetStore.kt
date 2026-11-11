@@ -101,7 +101,7 @@ object WidgetStore {
     }
 
     fun contrastPct(ctx: Context): Int =
-        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_CONTRAST, 0)
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_CONTRAST, 30)
 
     fun setContrastPct(ctx: Context, pct: Int) {
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
