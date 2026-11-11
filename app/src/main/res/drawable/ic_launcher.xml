@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- 绿底圆角方块 -->
-    <path
-        android:fillColor="#30A14E"
-        android:pathData="M12,12 h84 a8,8 0 0 1 8,8 v68 a8,8 0 0 1 -8,8 h-84 a8,8 0 0 1 -8,-8 v-68 a8,8 0 0 1 8,-8 z" />
-    <!-- 模拟格子 -->
-    <path android:fillColor="#B4F5C3" android:pathData="M24,24 h12 v12 h-12 z" />
-    <path android:fillColor="#FFFFFF" android:pathData="M42,24 h12 v12 h-12 z" />
-    <path android:fillColor="#1A7F37" android:pathData="M60,24 h12 v12 h-12 z" />
-    <path android:fillColor="#B4F5C3" android:pathData="M24,42 h12 v12 h-12 z" />
-    <path android:fillColor="#1A7F37" android:pathData="M42,42 h12 v12 h-12 z" />
-    <path android:fillColor="#FFFFFF" android:pathData="M60,42 h12 v12 h-12 z" />
-    <path android:fillColor="#FFFFFF" android:pathData="M24,60 h12 v12 h-12 z" />
-    <path android:fillColor="#B4F5C3" android:pathData="M42,60 h12 v12 h-12 z" />
-    <path android:fillColor="#1A7F37" android:pathData="M60,60 h12 v12 h-12 z" />
+    <!-- 绿→白 对角渐变圆角方块 -->
+    <path android:pathData="M20,12 h68 a8,8 0 0 1 8,8 v68 a8,8 0 0 1 -8,8 h-68 a8,8 0 0 1 -8,-8 v-68 a8,8 0 0 1 8,-8 z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="0" android:startY="0"
+                android:endX="108" android:endY="108"
+                android:startColor="#2EA44F"
+                android:endColor="#FFFFFF" />
+        </aapt:attr>
+    </path>
+    <!-- 3x3 格子（左上绿区用白格，右下白区用深绿格） -->
+    <path android:fillColor="#FFFFFF" android:pathData="M26,23 h12 a3,3 0 0 1 3,3 v12 a3,3 0 0 1 -3,3 h-12 a3,3 0 0 1 -3,-3 v-12 a3,3 0 0 1 3,-3 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M48,23 h12 a3,3 0 0 1 3,3 v12 a3,3 0 0 1 -3,3 h-12 a3,3 0 0 1 -3,-3 v-12 a3,3 0 0 1 3,-3 z" />
+    <path android:fillColor="#1A7F37" android:pathData="M70,23 h12 a3,3 0 0 1 3,3 v12 a3,3 0 0 1 -3,3 h-12 a3,3 0 0 1 -3,-3 v-12 a3,3 0 0 1 3,-3 z" />
+    <path android:fillColor="#1A7F37" android:pathData="M26,45 h12 a3,3 0 0 1 3,3 v12 a3,3 0 0 1 -3,3 h-12 a3,3 0 0 1 -3,-3 v-12 a3,3 0 0 1 3,-3 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M48,45 h12 a3,3 0 0 1 3,3 v12 a3,3 0 0 1 -3,3 h-12 a3,3 0 0 1 -3,-3 v-12 a3,3 0 0 1 3,-3 z" />
+    <path android:fillColor="#1A7F37" android:pathData="M70,45 h12 a3,3 0 0 1 3,3 v12 a3,3 0 0 1 -3,3 h-12 a3,3 0 0 1 -3,-3 v-12 a3,3 0 0 1 3,-3 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M26,67 h12 a3,3 0 0 1 3,3 v12 a3,3 0 0 1 -3,3 h-12 a3,3 0 0 1 -3,-3 v-12 a3,3 0 0 1 3,-3 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M48,67 h12 a3,3 0 0 1 3,3 v12 a3,3 0 0 1 -3,3 h-12 a3,3 0 0 1 -3,-3 v-12 a3,3 0 0 1 3,-3 z" />
+    <path android:fillColor="#0E4429" android:pathData="M70,67 h12 a3,3 0 0 1 3,3 v12 a3,3 0 0 1 -3,3 h-12 a3,3 0 0 1 -3,-3 v-12 a3,3 0 0 1 3,-3 z" />
 </vector>

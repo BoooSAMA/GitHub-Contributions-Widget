@@ -55,36 +55,39 @@ class MainActivity : Activity() {
         showError(null)
 
         thread(name = "gh-preview") {
-            val cells = GithubGraphFetcher.fetch(name)
+            val result = GithubGraphFetcher.fetchWithDetail(name)
             runOnUiThread {
-                when {
-                    cells == null -> {
-                        showError(getString(R.string.msg_fail))
+                when (result) {
+                    is GithubGraphFetcher.FetchResult.Failure -> {
+                        showError(result.reason)
                         resetButton()
                     }
-                    cells.isEmpty() -> {
-                        status.setTextColor(getColor(R.color.text_secondary))
-                        status.text = getString(R.string.msg_empty_user)
-                        resetButton()
-                    }
-                    else -> {
-                val w = preview.width.takeIf { it > 0 } ?: (resources.displayMetrics.widthPixels - 80)
-                val h = preview.height.takeIf { it > 0 } ?: (140 * resources.displayMetrics.density).toInt()
-                val bm: Bitmap? = ContributionRenderer.render(cells, w, h, isDark())
-                WidgetStore.saveUsername(this, name)
-                WidgetStore.saveCells(this, cells)
-                bm?.let {
-                    WidgetStore.saveBitmap(this, it)
-                    preview.setImageBitmap(it)
-                }
-                status.setTextColor(getColor(R.color.success))
-                status.text = getString(R.string.msg_saved, name)
-                resetButton()
-                refreshWidgets()
-                    }
+                    is GithubGraphFetcher.FetchResult.Success -> applyResult(name, result.cells)
                 }
             }
         }
+    }
+
+    private fun applyResult(name: String, cells: List<GithubGraphFetcher.Cell>) {
+        if (cells.isEmpty()) {
+            status.setTextColor(getColor(R.color.text_secondary))
+            status.text = getString(R.string.msg_empty_user)
+            resetButton()
+            return
+        }
+        val w = preview.width.takeIf { it > 0 } ?: (resources.displayMetrics.widthPixels - 80)
+        val h = preview.height.takeIf { it > 0 } ?: (140 * resources.displayMetrics.density).toInt()
+        val bm: Bitmap? = ContributionRenderer.render(cells, w, h, isDark())
+        WidgetStore.saveUsername(this, name)
+        WidgetStore.saveCells(this, cells)
+        bm?.let {
+            WidgetStore.saveBitmap(this, it)
+            preview.setImageBitmap(it)
+        }
+        status.setTextColor(getColor(R.color.success))
+        status.text = getString(R.string.msg_saved, name)
+        resetButton()
+        refreshWidgets()
     }
 
     private fun resetButton() {

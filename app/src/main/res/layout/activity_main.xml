@@ -62,7 +62,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:hint="@string/hint_username"
-                android:inputType="textNoSuggestions|textVisiblePassword"
+                android:inputType="text|textNoSuggestions"
                 android:maxLines="1"
                 android:importantForAutofill="no"
                 android:textSize="15sp"

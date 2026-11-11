@@ -5,7 +5,7 @@
 
     <application
         android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:theme="@android:style/Theme.DeviceDefault.DayNight">
 
         <!-- 无实际功能页，仅作为安装成功提示入口 -->

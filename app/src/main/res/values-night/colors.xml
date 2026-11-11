@@ -1,5 +1,16 @@
 <resources>
-    <!-- 卡片背景：深色模式半透明深灰 -->
+    <!-- ===== 语义色 token（App 界面）===== -->
+    <color name="app_bg">#0D1117</color>
+    <color name="surface">#161B22</color>
+    <color name="outline">#30363D</color>
+    <color name="text_primary">#F0F6FC</color>
+    <color name="text_secondary">#8B949E</color>
+    <color name="primary">#3FB950</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="error">#F85149</color>
+    <color name="success">#3FB950</color>
+
+    <!-- ===== 小组件卡片 ===== -->
     <color name="widget_bg">#521E1E1E</color>
     <color name="widget_stroke">#26AAAAAA</color>
     <color name="widget_text">#B3FFFFFF</color>
