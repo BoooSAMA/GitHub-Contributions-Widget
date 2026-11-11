@@ -25,6 +25,7 @@ object WidgetStore {
     private const val KEY_MONTH_MODE = "month_mode"
     private const val KEY_MONTH_COLOR = "month_color"
     private const val KEY_MONTH_SCALE = "month_scale"
+    private const val KEY_LANG = "lang_mode"
     private const val CACHE_FILE = "gh_graph.png"
 
     const val THEME_SYSTEM = 0
@@ -38,6 +39,9 @@ object WidgetStore {
     const val BG_AUTO = 0
     const val BG_TRANS = 1
     const val BG_FIXED = 2
+
+    const val LANG_EN = 0
+    const val LANG_ZH = 1
 
     fun themeMode(ctx: Context): Int =
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_THEME, THEME_SYSTEM)
@@ -141,6 +145,14 @@ object WidgetStore {
     fun setMonthScale(ctx: Context, pct: Int) {
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit().putInt(KEY_MONTH_SCALE, pct).apply()
+    }
+
+    fun langMode(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_LANG, LANG_EN)
+
+    fun setLangMode(ctx: Context, mode: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_LANG, mode).apply()
     }
 
     /** 汇总全部客制化设置为渲染配置；dark 由调用方按当前主题传入 */

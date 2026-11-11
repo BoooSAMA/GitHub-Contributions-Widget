@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
+import java.util.Locale
 import kotlin.concurrent.thread
 
 /**
@@ -33,16 +34,18 @@ class MainActivity : Activity() {
     private lateinit var llBgPills: LinearLayout
     private lateinit var llGlassPills: LinearLayout
     private lateinit var llMonthPills: LinearLayout
+    private lateinit var llLangPills: LinearLayout
 
     override fun attachBaseContext(base: Context) {
-        val mode = WidgetStore.themeMode(base)
-        if (mode == WidgetStore.THEME_SYSTEM) {
-            super.attachBaseContext(base)
-            return
-        }
         val cfg = Configuration(base.resources.configuration)
-        cfg.uiMode = (cfg.uiMode and Configuration.UI_MODE_NIGHT_MASK.inv()) or
-            if (mode == WidgetStore.THEME_DARK) Configuration.UI_MODE_NIGHT_YES else Configuration.UI_MODE_NIGHT_NO
+        val mode = WidgetStore.themeMode(base)
+        if (mode != WidgetStore.THEME_SYSTEM) {
+            cfg.uiMode = (cfg.uiMode and Configuration.UI_MODE_NIGHT_MASK.inv()) or
+                if (mode == WidgetStore.THEME_DARK) Configuration.UI_MODE_NIGHT_YES else Configuration.UI_MODE_NIGHT_NO
+        }
+        val locale = Locale(if (WidgetStore.langMode(base) == WidgetStore.LANG_ZH) "zh" else "en")
+        cfg.setLocale(locale)
+        Locale.setDefault(locale)
         super.attachBaseContext(base.createConfigurationContext(cfg))
     }
 
@@ -60,6 +63,7 @@ class MainActivity : Activity() {
         llBgPills = findViewById(R.id.ll_bg_pills)
         llGlassPills = findViewById(R.id.ll_glass_pills)
         llMonthPills = findViewById(R.id.ll_month_pills)
+        llLangPills = findViewById(R.id.ll_lang_pills)
         setupSliders()
 
         input.setText(WidgetStore.username(this))
@@ -88,13 +92,26 @@ class MainActivity : Activity() {
             runOnUiThread {
                 when (result) {
                     is GithubGraphFetcher.FetchResult.Failure -> {
-                        showError(result.reason)
+                        showError(failureMessage(result))
                         resetButton()
                     }
                     is GithubGraphFetcher.FetchResult.Success -> applyResult(name, result.cells)
                 }
             }
         }
+    }
+
+    private fun failureMessage(f: GithubGraphFetcher.FetchResult.Failure): String {
+        val resId = when (f.kind) {
+            GithubGraphFetcher.FetchResult.Failure.Kind.HTTP -> R.string.error_http
+            GithubGraphFetcher.FetchResult.Failure.Kind.NOT_FOUND -> R.string.error_http_404
+            GithubGraphFetcher.FetchResult.Failure.Kind.RATE_LIMIT -> R.string.error_http_429
+            GithubGraphFetcher.FetchResult.Failure.Kind.EMPTY -> R.string.error_empty
+            GithubGraphFetcher.FetchResult.Failure.Kind.TIMEOUT -> R.string.error_timeout
+            GithubGraphFetcher.FetchResult.Failure.Kind.DNS -> R.string.error_dns
+            GithubGraphFetcher.FetchResult.Failure.Kind.NETWORK -> R.string.error_network
+        }
+        return if (f.detail.isEmpty()) getString(resId) else getString(resId, f.detail)
     }
 
     private fun applyResult(name: String, cells: List<GithubGraphFetcher.Cell>) {
@@ -220,6 +237,14 @@ class MainActivity : Activity() {
         }
 
     private fun buildAppearanceSection() {
+        val langLabels = listOf(getString(R.string.lang_en), getString(R.string.lang_zh))
+        buildPills(llLangPills, langLabels, WidgetStore.langMode(this)) { index ->
+            if (index != WidgetStore.langMode(this)) {
+                WidgetStore.setLangMode(this, index)
+                recreate()
+            }
+        }
+
         val themeLabels = listOf(
             getString(R.string.theme_system), getString(R.string.theme_light), getString(R.string.theme_dark)
         )

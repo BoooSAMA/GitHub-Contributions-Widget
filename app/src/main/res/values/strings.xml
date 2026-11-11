@@ -1,53 +1,62 @@
 <resources>
     <string name="app_name">GitHub Contribute Graph</string>
     <string name="widget_name" translatable="false">&#8203;</string>
-    <string name="widget_desc">GitHub 贡献热力图小组件，自动刷新</string>
-    <!-- 默认用户名：首次打开也可在界面里直接修改并保存 -->
+    <string name="widget_desc">GitHub contribution heatmap widget, auto-refreshing</string>
     <string name="github_username" translatable="false">cat</string>
 
-    <string name="status_no_data">等待网络…\n稍后自动加载</string>
+    <string name="status_no_data">Waiting for network…\nLoading automatically</string>
 
-    <!-- 配置页 -->
-    <string name="subtitle">免登录 · 输入 GitHub 用户名，即刻预览贡献绿墙并绑定桌面小组件</string>
-    <string name="label_username">GitHub 用户名</string>
-    <string name="hint_username">例如：torvalds</string>
-    <string name="label_preview">预览</string>
-    <string name="btn_apply">预览并应用</string>
-    <string name="btn_loading">加载中…</string>
-    <string name="status_idle">尚未应用。输入用户名后点击上方按钮即可预览。</string>
-    <string name="msg_need_username">请输入 GitHub 用户名</string>
-    <string name="msg_empty_user">该账号暂无公开贡献数据</string>
-    <string name="msg_saved">已应用：@%s\n桌面小组件已刷新（若无小组件，长按桌面 → 小部件 → 添加）</string>
-    <string name="help_text">使用说明\n\n1. 打开桌面上的「GitHub 绿墙」，输入你的用户名\n2. 点击「预览并应用」，绿墙立即生成\n3. 长按桌面空白处 → 小部件 → 拖入「GitHub 绿墙」，可拖动边角调整大小\n\n· 数据每 6 小时自动刷新，无需登录 GitHub\n· 点击小组件直接打开你的 GitHub 主页\n· 「自动适配」跨度会按小组件尺寸只显示最近的周</string>
+    <string name="subtitle">No login required · Enter your GitHub username to preview the contribution graph and bind it to your home screen widget</string>
+    <string name="label_username">GitHub username</string>
+    <string name="hint_username">e.g. torvalds</string>
+    <string name="label_preview">Preview</string>
+    <string name="btn_apply">Preview &amp; apply</string>
+    <string name="btn_loading">Loading…</string>
+    <string name="status_idle">Not applied yet. Enter a username and tap the button above to preview.</string>
+    <string name="msg_need_username">Please enter a GitHub username</string>
+    <string name="msg_empty_user">This account has no public contribution data</string>
+    <string name="msg_saved">Applied: @%s\nThe home screen widget has been refreshed (if none exists: long-press home → Widgets → add)</string>
+    <string name="help_text">How to use\n\n1. Open the widget app on your home screen and enter your username\n2. Tap "Preview &amp; apply" — the graph appears instantly\n3. Long-press an empty spot on the home screen → Widgets → drag in this widget, then drag corners to resize\n\n· Data refreshes every 6 hours automatically, no GitHub login needed\n· Tap the widget to open your GitHub profile\n· The "Auto fit" span shows only the most recent weeks that fit the widget size</string>
 
-    <!-- 外观设置卡片 -->
-    <string name="label_appearance">外观与小组件</string>
-    <string name="label_theme">主题</string>
-    <string name="label_span">小组件时间跨度</string>
-    <string name="label_corner">卡片圆角：%1$d%%</string>
-    <string name="label_stroke">空格子描边：%1$d%%</string>
-    <string name="label_bg">卡牌底色</string>
-    <string name="label_bgalpha">底色透明度：%1$d%%</string>
-    <string name="label_margin">卡牌边距：%1$d%%</string>
-    <string name="label_contrast">空格子对比度：%1$d%%</string>
-    <string name="label_glass">毛玻璃底框</string>
-    <string name="label_month_color">月份文字颜色</string>
-    <string name="label_monthscale">月份字号：%1$d%%</string>
-    <string name="month_gray">中灰</string>
-    <string name="month_slate">石板灰</string>
-    <string name="bg_auto">跟随主题</string>
-    <string name="bg_trans">纯透明</string>
-    <string name="bg_white">纯白</string>
-    <string name="bg_offwhite">浅灰</string>
-    <string name="bg_black">纯黑</string>
-    <string name="bg_charcoal">炭黑</string>
-    <string name="glass_on">显示</string>
-    <string name="glass_off">隐藏</string>
-    <string name="theme_system">跟随系统</string>
-    <string name="theme_light">浅色</string>
-    <string name="theme_dark">深色</string>
-    <string name="span_auto">自动适配</string>
-    <string name="span_all">全年</string>
-    <string name="span_half">近半年</string>
-    <string name="span_quarter">近三月</string>
+    <string name="label_appearance">Appearance &amp; Widget</string>
+    <string name="label_theme">Theme</string>
+    <string name="label_span">Widget time span</string>
+    <string name="label_corner">Corner radius: %1$d%%</string>
+    <string name="label_stroke">Empty tile stroke: %1$d%%</string>
+    <string name="label_bg">Card background</string>
+    <string name="label_bgalpha">Background opacity: %1$d%%</string>
+    <string name="label_margin">Card margin: %1$d%%</string>
+    <string name="label_contrast">Empty tile contrast: %1$d%%</string>
+    <string name="label_glass">Frosted glass frame</string>
+    <string name="label_month_color">Month label color</string>
+    <string name="label_monthscale">Month label size: %1$d%%</string>
+    <string name="month_gray">Medium gray</string>
+    <string name="month_slate">Slate gray</string>
+    <string name="bg_auto">Follow theme</string>
+    <string name="bg_trans">Transparent</string>
+    <string name="bg_white">White</string>
+    <string name="bg_offwhite">Off-white</string>
+    <string name="bg_black">Black</string>
+    <string name="bg_charcoal">Charcoal</string>
+    <string name="glass_on">Show</string>
+    <string name="glass_off">Hide</string>
+    <string name="theme_system">Follow system</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="span_auto">Auto fit</string>
+    <string name="span_all">Full year</string>
+    <string name="span_half">Last 6 months</string>
+    <string name="span_quarter">Last 3 months</string>
+
+    <string name="label_language">Language</string>
+    <string name="lang_en" translatable="false">English</string>
+    <string name="lang_zh" translatable="false">中文</string>
+
+    <string name="error_http">GitHub returned HTTP %1$s</string>
+    <string name="error_http_404">GitHub returned HTTP %1$s (user not found?)</string>
+    <string name="error_http_429">GitHub returned HTTP %1$s (rate limited, try again later)</string>
+    <string name="error_empty">No contribution data on the page (GitHub may have changed its layout)\n%1$s</string>
+    <string name="error_timeout">Connection to GitHub timed out — your network may not reach GitHub directly</string>
+    <string name="error_dns">Couldn\'t resolve github.com — check your network</string>
+    <string name="error_network">Network error: %1$s</string>
 </resources>

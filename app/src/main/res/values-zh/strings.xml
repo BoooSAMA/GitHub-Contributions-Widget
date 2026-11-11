@@ -1,0 +1,57 @@
+<resources>
+    <string name="widget_desc">GitHub 贡献热力图小组件，自动刷新</string>
+
+    <string name="status_no_data">等待网络…\n稍后自动加载</string>
+
+    <string name="subtitle">免登录 · 输入 GitHub 用户名，即刻预览贡献绿墙并绑定桌面小组件</string>
+    <string name="label_username">GitHub 用户名</string>
+    <string name="hint_username">例如：torvalds</string>
+    <string name="label_preview">预览</string>
+    <string name="btn_apply">预览并应用</string>
+    <string name="btn_loading">加载中…</string>
+    <string name="status_idle">尚未应用。输入用户名后点击上方按钮即可预览。</string>
+    <string name="msg_need_username">请输入 GitHub 用户名</string>
+    <string name="msg_empty_user">该账号暂无公开贡献数据</string>
+    <string name="msg_saved">已应用：@%s\n桌面小组件已刷新（若无小组件，长按桌面 → 小部件 → 添加）</string>
+    <string name="help_text">使用说明\n\n1. 打开桌面上的小组件 App，输入你的用户名\n2. 点击「预览并应用」，绿墙立即生成\n3. 长按桌面空白处 → 小部件 → 拖入本小组件，可拖动边角调整大小\n\n· 数据每 6 小时自动刷新，无需登录 GitHub\n· 点击小组件直接打开你的 GitHub 主页\n· 「自动适配」跨度会按小组件尺寸只显示最近的周</string>
+
+    <string name="label_appearance">外观与小组件</string>
+    <string name="label_theme">主题</string>
+    <string name="label_span">小组件时间跨度</string>
+    <string name="label_corner">卡片圆角：%1$d%%</string>
+    <string name="label_stroke">空格子描边：%1$d%%</string>
+    <string name="label_bg">卡牌底色</string>
+    <string name="label_bgalpha">底色透明度：%1$d%%</string>
+    <string name="label_margin">卡牌边距：%1$d%%</string>
+    <string name="label_contrast">空格子对比度：%1$d%%</string>
+    <string name="label_glass">毛玻璃底框</string>
+    <string name="label_month_color">月份文字颜色</string>
+    <string name="label_monthscale">月份字号：%1$d%%</string>
+    <string name="month_gray">中灰</string>
+    <string name="month_slate">石板灰</string>
+    <string name="bg_auto">跟随主题</string>
+    <string name="bg_trans">纯透明</string>
+    <string name="bg_white">纯白</string>
+    <string name="bg_offwhite">浅灰</string>
+    <string name="bg_black">纯黑</string>
+    <string name="bg_charcoal">炭黑</string>
+    <string name="glass_on">显示</string>
+    <string name="glass_off">隐藏</string>
+    <string name="theme_system">跟随系统</string>
+    <string name="theme_light">浅色</string>
+    <string name="theme_dark">深色</string>
+    <string name="span_auto">自动适配</string>
+    <string name="span_all">全年</string>
+    <string name="span_half">近半年</string>
+    <string name="span_quarter">近三月</string>
+
+    <string name="label_language">语言</string>
+
+    <string name="error_http">GitHub 返回 HTTP %1$s</string>
+    <string name="error_http_404">GitHub 返回 HTTP %1$s（用户名不存在？）</string>
+    <string name="error_http_429">GitHub 返回 HTTP %1$s（被限流，稍后再试）</string>
+    <string name="error_empty">页面无贡献数据（GitHub 可能改版）\n%1$s</string>
+    <string name="error_timeout">连接 GitHub 超时：当前网络可能无法直连 GitHub</string>
+    <string name="error_dns">无法解析 GitHub 域名：请检查网络</string>
+    <string name="error_network">网络错误：%1$s</string>
+</resources>

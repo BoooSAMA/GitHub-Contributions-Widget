@@ -35,12 +35,13 @@ object GithubGraphFetcher {
         return try {
             client.newCall(request).execute().use { resp ->
                 if (!resp.isSuccessful) {
-                    val why = when (resp.code) {
-                        404 -> "（用户名不存在？）"
-                        403, 429 -> "（被 GitHub 限流，稍后再试）"
-                        else -> ""
+                    val code = resp.code.toString()
+                    val kind = when (resp.code) {
+                        404 -> FetchResult.Failure.Kind.NOT_FOUND
+                        403, 429 -> FetchResult.Failure.Kind.RATE_LIMIT
+                        else -> FetchResult.Failure.Kind.HTTP
                     }
-                    return FetchResult.Failure("GitHub 返回 HTTP ${resp.code}$why")
+                    return FetchResult.Failure(kind, code)
                 }
                 val html = resp.body!!.string()
                 val cells = parse(html)
@@ -51,21 +52,23 @@ object GithubGraphFetcher {
                         append(" rect="); append(if (html.contains("<rect")) 1 else 0)
                         append(" date="); append(if (html.contains("data-date")) 1 else 0)
                     }
-                    FetchResult.Failure("页面无贡献数据（GitHub 可能改版）\n$diag\n${html.take(200).replace('\n', ' ')}")
+                    FetchResult.Failure(FetchResult.Failure.Kind.EMPTY, "$diag\n${html.take(200).replace('\n', ' ')}")
                 } else FetchResult.Success(cells)
             }
         } catch (e: SocketTimeoutException) {
-            FetchResult.Failure("连接 GitHub 超时：当前网络可能无法直连 GitHub")
+            FetchResult.Failure(FetchResult.Failure.Kind.TIMEOUT)
         } catch (e: UnknownHostException) {
-            FetchResult.Failure("无法解析 GitHub 域名：请检查网络")
+            FetchResult.Failure(FetchResult.Failure.Kind.DNS)
         } catch (e: IOException) {
-            FetchResult.Failure("网络错误：${e.message ?: "连接失败"}")
+            FetchResult.Failure(FetchResult.Failure.Kind.NETWORK, e.message ?: e.javaClass.simpleName)
         }
     }
 
     sealed class FetchResult {
         data class Success(val cells: List<Cell>) : FetchResult()
-        data class Failure(val reason: String) : FetchResult()
+        data class Failure(val kind: Kind, val detail: String = "") : FetchResult() {
+            enum class Kind { HTTP, NOT_FOUND, RATE_LIMIT, EMPTY, TIMEOUT, DNS, NETWORK }
+        }
     }
 
     /** 属性顺序无关的轻量解析：旧版为 SVG <rect>，2026 新版为表格 <td class="ContributionCalendar-day"> */

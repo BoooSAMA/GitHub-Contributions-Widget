@@ -31,6 +31,7 @@
 | 毛玻璃底框 | 显示 / 隐藏 | |
 | 月份文字颜色 | 跟随主题 / 中灰 / 石板灰 / 白 / 黑 | |
 | 月份字号 | 60% ~ 200% | 相对格子尺寸 |
+| 语言 / Language | English / 中文 | 默认 English，切换即时生效（无需重启） |
 
 ## 安装方式
 
@@ -91,7 +92,8 @@ GitHub-Contributions-Widget/
 │           ├── layout/widget_github.xml     # ★ 小组件容器布局（ImageView + 毛玻璃底框）
 │           ├── values/colors.xml            # ★ 浅色主题语义色 token
 │           ├── values-night/colors.xml      # ★ 深色主题语义色 token
-│           ├── values/strings.xml           # ★ 全部界面文案与默认用户名
+│           ├── values/strings.xml           # ★ 界面文案（默认英文，语言切换的热更新来源）
+│           ├── values-zh/strings.xml        # ★ 中文文案
 │           ├── drawable/
 │           │   ├── widget_background.xml    # ★ 小组件毛玻璃底框
 │           │   ├── bg_card.xml              # app 内卡片背景
@@ -116,7 +118,8 @@ GitHub-Contributions-Widget/
 | 小组件尺寸、刷新周期、能否缩放 | `res/xml/github_widget_info.xml` |
 | app 界面的控件排布 / 增加设置项 | `res/layout/activity_main.xml` + `MainActivity.kt` |
 | 深浅两套配色 | `res/values/colors.xml` / `res/values-night/colors.xml` |
-| 所有文案、默认用户名 | `res/values/strings.xml` |
+| 所有文案、默认用户名 | `res/values/strings.xml`（英文默认）/ `res/values-zh/strings.xml`（中文） |
+| 界面语言 / 默认语言 | `WidgetStore.kt` 的 `langMode`（默认 `LANG_EN`）+ `MainActivity.attachBaseContext` |
 | 按钮 / 输入框 / pill 的样式 | `res/drawable/bg_*.xml`、`pill_bg*.xml` |
 | app 图标 | `res/drawable/ic_launcher*.xml` |
 | 版本号 | `app/build.gradle.kts` → `versionCode` / `versionName` |

@@ -31,6 +31,7 @@ An **ultra-lightweight** native Android home-screen widget (AppWidget) that pins
 | Frosted glass frame | Show / Hide | |
 | Month label color | Theme / Gray / Slate / White / Black | |
 | Month label size | 60% – 200% | Relative to tile size |
+| Language | English / 中文 | Defaults to English; switching applies instantly (no restart) |
 
 ## Installation
 
@@ -90,7 +91,8 @@ GitHub-Contributions-Widget/
 │           ├── layout/widget_github.xml     # ★ widget container (ImageView + glass frame)
 │           ├── values/colors.xml            # ★ light theme semantic color tokens
 │           ├── values-night/colors.xml      # ★ dark theme semantic color tokens
-│           ├── values/strings.xml           # ★ all UI strings and default username
+│           ├── values/strings.xml           # ★ UI strings (English default; source for hot language switch)
+│           ├── values-zh/strings.xml        # ★ Chinese strings
 │           ├── drawable/
 │           │   ├── widget_background.xml    # ★ widget frosted-glass frame
 │           │   ├── bg_card.xml              # in-app card background
@@ -115,7 +117,8 @@ GitHub-Contributions-Widget/
 | Widget size, refresh interval, resizability | `res/xml/github_widget_info.xml` |
 | App UI layout / adding new settings | `res/layout/activity_main.xml` + `MainActivity.kt` |
 | Light/dark palettes | `res/values/colors.xml` / `res/values-night/colors.xml` |
-| All strings, default username | `res/values/strings.xml` |
+| All strings, default username | `res/values/strings.xml` (English default) / `res/values-zh/strings.xml` (Chinese) |
+| UI language / default language | `langMode` in `WidgetStore.kt` (default `LANG_EN`) + `MainActivity.attachBaseContext` |
 | Button / input / pill styles | `res/drawable/bg_*.xml`, `pill_bg*.xml` |
 | App icon | `res/drawable/ic_launcher*.xml` |
 | Version number | `app/build.gradle.kts` → `versionCode` / `versionName` |
