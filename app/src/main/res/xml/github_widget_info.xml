@@ -10,5 +10,6 @@
     android:previewLayout="@layout/widget_github"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
+    android:label="@string/widget_name"
     android:description="@string/widget_desc"
     tools:targetApi="31" />

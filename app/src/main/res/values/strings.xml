@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">GitHub 绿墙</string>
-    <string name="widget_name">GitHub 绿墙</string>
+    <string name="app_name">GitHub Contribute Graph</string>
+    <string name="widget_name" translatable="false">&#8203;</string>
     <string name="widget_desc">GitHub 贡献热力图小组件，自动刷新</string>
     <!-- 默认用户名：首次打开也可在界面里直接修改并保存 -->
     <string name="github_username" translatable="false">cat</string>
