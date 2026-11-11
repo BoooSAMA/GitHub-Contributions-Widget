@@ -24,6 +24,8 @@
     <string name="label_appearance">外观与小组件</string>
     <string name="label_theme">主题</string>
     <string name="label_span">小组件时间跨度</string>
+    <string name="label_corner">卡片圆角：%1$d%%</string>
+    <string name="label_stroke">空格子描边：%1$d%%</string>
     <string name="theme_system">跟随系统</string>
     <string name="theme_light">浅色</string>
     <string name="theme_dark">深色</string>

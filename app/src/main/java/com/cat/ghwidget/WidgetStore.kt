@@ -14,6 +14,8 @@ object WidgetStore {
     private const val KEY_USER = "username"
     private const val KEY_THEME = "theme_mode"
     private const val KEY_SPAN = "span_weeks"
+    private const val KEY_CORNER = "corner_pct"
+    private const val KEY_STROKE = "stroke_pct"
     private const val CACHE_FILE = "gh_graph.png"
 
     const val THEME_SYSTEM = 0
@@ -37,6 +39,22 @@ object WidgetStore {
     fun setSpanWeeks(ctx: Context, weeks: Int) {
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit().putInt(KEY_SPAN, weeks).apply()
+    }
+
+    fun cornerPct(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_CORNER, 7)
+
+    fun setCornerPct(ctx: Context, pct: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_CORNER, pct).apply()
+    }
+
+    fun strokePct(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_STROKE, 7)
+
+    fun setStrokePct(ctx: Context, pct: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_STROKE, pct).apply()
     }
 
     fun username(ctx: Context): String =

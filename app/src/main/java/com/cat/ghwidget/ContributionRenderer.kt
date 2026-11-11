@@ -22,7 +22,10 @@ object ContributionRenderer {
     private val MONTHS = arrayOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
     /** 渲染 cells（按日期升序）到 w×h Bitmap；spanWeeks=0 按宽高比自动适配显示最近列，>0 固定周数 */
-    fun render(cells: List<GithubGraphFetcher.Cell>, w: Int, h: Int, dark: Boolean, spanWeeks: Int = 0): Bitmap? {
+    fun render(
+        cells: List<GithubGraphFetcher.Cell>, w: Int, h: Int, dark: Boolean,
+        spanWeeks: Int = 0, cornerPct: Float = 0.07f, strokePct: Float = 0.07f
+    ): Bitmap? {
         if (cells.isEmpty() || w < 20 || h < 20) return null
         val bg = BG[if (dark) 1 else 0]
         val labelColor = LABEL[if (dark) 1 else 0]
@@ -61,7 +64,7 @@ object ContributionRenderer {
         val canvas = Canvas(bitmap)
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
         val radius = size * 0.22f
-        val cardRadius = minOf(w, h) * 0.07f
+        val cardRadius = minOf(w, h) * cornerPct
         paint.color = bg
         canvas.drawRoundRect(0f, 0f, w.toFloat(), h.toFloat(), cardRadius, cardRadius, paint)
         paint.style = Paint.Style.FILL_AND_STROKE
@@ -71,12 +74,12 @@ object ContributionRenderer {
         val ox = ((w - gridW) / 2f)
         val oy = ((h - gridH) / 2f).coerceAtLeast(labelH.toFloat())
 
-        val strokeW = maxOf(1f, size * 0.07f)
-        val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        val strokeW = if (strokePct <= 0f) 0f else maxOf(1f, size * strokePct)
+        val strokePaint = if (strokeW > 0f) Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.STROKE
             setColor(EMPTY_STROKE[if (dark) 1 else 0])
             strokeWidth = strokeW
-        }
+        } else null
         for ((i, cell) in sub.withIndex()) {
             val col = i / rows
             val row = i % rows
@@ -84,7 +87,7 @@ object ContributionRenderer {
             val y = oy + row * (size + gap)
             paint.color = palette[cell.level.coerceIn(0, palette.size - 1)]
             canvas.drawRoundRect(x, y, x + size, y + size, radius, radius, paint)
-            if (cell.level == 0) canvas.drawRoundRect(x, y, x + size, y + size, radius, radius, strokePaint)
+            if (cell.level == 0) strokePaint?.let { canvas.drawRoundRect(x, y, x + size, y + size, radius, radius, it) }
         }
 
         if (showLabels && size >= 6) drawMonthLabels(canvas, sub, size, gap, ox, labelH, labelColor, displayCols, rows)

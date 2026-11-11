@@ -56,7 +56,10 @@ class GithubWidgetProvider : AppWidgetProvider() {
             val cachedCells = WidgetStore.loadCells(context)
             val cacheBm = WidgetStore.loadBitmap(context)
 
-            val immediate = ContributionRenderer.render(cachedCells, wPx, hPx, dark, WidgetStore.spanWeeks(context)) ?: cacheBm
+            val immediate = ContributionRenderer.render(
+                cachedCells, wPx, hPx, dark, WidgetStore.spanWeeks(context),
+                WidgetStore.cornerPct(context) / 100f, WidgetStore.strokePct(context) / 100f
+            ) ?: cacheBm
             if (immediate != null) {
                 views.setImageViewBitmap(R.id.img_graph, immediate)
                 views.setViewVisibility(R.id.tv_status, android.view.View.GONE)
@@ -71,7 +74,10 @@ class GithubWidgetProvider : AppWidgetProvider() {
                     ?.takeIf { it.isNotEmpty() && it.size >= cachedCells.size }
                     ?: return@thread // 网络失败或数据更旧 → 保留缓存图
                 WidgetStore.saveCells(context, cells)
-                val fresh = ContributionRenderer.render(cells, wPx, hPx, dark, WidgetStore.spanWeeks(context)) ?: return@thread
+                val fresh = ContributionRenderer.render(
+                    cells, wPx, hPx, dark, WidgetStore.spanWeeks(context),
+                    WidgetStore.cornerPct(context) / 100f, WidgetStore.strokePct(context) / 100f
+                ) ?: return@thread
                 WidgetStore.saveBitmap(context, fresh)
                 main.post {
                     val v = RemoteViews(context.packageName, R.layout.widget_github)

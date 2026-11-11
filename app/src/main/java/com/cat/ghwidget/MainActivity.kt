@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.SeekBar
 import android.widget.TextView
 import kotlin.concurrent.thread
 
@@ -53,6 +54,7 @@ class MainActivity : Activity() {
         error = findViewById(R.id.tv_error)
         llThemePills = findViewById(R.id.ll_theme_pills)
         llSpanPills = findViewById(R.id.ll_span_pills)
+        setupSliders()
 
         input.setText(WidgetStore.username(this))
         status.text = getString(R.string.status_idle)
@@ -98,7 +100,10 @@ class MainActivity : Activity() {
         }
         val w = preview.width.takeIf { it > 0 } ?: (resources.displayMetrics.widthPixels - 80)
         val h = preview.height.takeIf { it > 0 } ?: (140 * resources.displayMetrics.density).toInt()
-        val bm: Bitmap? = ContributionRenderer.render(cells, w, h, isDark(), WidgetStore.spanWeeks(this))
+        val bm: Bitmap? = ContributionRenderer.render(
+            cells, w, h, isDark(), WidgetStore.spanWeeks(this),
+            WidgetStore.cornerPct(this) / 100f, WidgetStore.strokePct(this) / 100f
+        )
         WidgetStore.saveUsername(this, name)
         WidgetStore.saveCells(this, cells)
         bm?.let {
@@ -110,6 +115,52 @@ class MainActivity : Activity() {
         resetButton()
         refreshWidgets()
     }
+
+    private fun setupSliders() {
+        val sbCorner = findViewById<SeekBar>(R.id.sb_corner)
+        val tvCorner = findViewById<TextView>(R.id.tv_corner_label)
+        val sbStroke = findViewById<SeekBar>(R.id.sb_stroke)
+        val tvStroke = findViewById<TextView>(R.id.tv_stroke_label)
+        val updateCornerLabel = { v: Int ->
+            tvCorner.text = getString(R.string.label_corner, v)
+        }
+        val updateStrokeLabel = { v: Int ->
+            tvStroke.text = getString(R.string.label_stroke, v)
+        }
+        sbCorner.progress = WidgetStore.cornerPct(this)
+        updateCornerLabel(sbCorner.progress)
+        sbStroke.progress = WidgetStore.strokePct(this)
+        updateStrokeLabel(sbStroke.progress)
+        sbCorner.setOnSeekBarChangeListener(sliderListener(
+            onChange = { v ->
+                WidgetStore.setCornerPct(this, v)
+                updateCornerLabel(v)
+            },
+            onCommit = {
+                rebuildPreview()
+                refreshWidgets()
+            }
+        ))
+        sbStroke.setOnSeekBarChangeListener(sliderListener(
+            onChange = { v ->
+                WidgetStore.setStrokePct(this, v)
+                updateStrokeLabel(v)
+            },
+            onCommit = {
+                rebuildPreview()
+                refreshWidgets()
+            }
+        ))
+    }
+
+    private fun sliderListener(onChange: (Int) -> Unit, onCommit: () -> Unit): SeekBar.OnSeekBarChangeListener =
+        object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(bar: SeekBar?, value: Int, fromUser: Boolean) {
+                if (fromUser) onChange(value)
+            }
+            override fun onStartTrackingTouch(bar: SeekBar?) {}
+            override fun onStopTrackingTouch(bar: SeekBar?) = onCommit()
+        }
 
     private fun buildAppearanceSection() {
         val themeLabels = listOf(
@@ -171,7 +222,10 @@ class MainActivity : Activity() {
         if (cells.isEmpty()) return
         val w = preview.width.takeIf { it > 0 } ?: (resources.displayMetrics.widthPixels - 80)
         val h = preview.height.takeIf { it > 0 } ?: (140 * resources.displayMetrics.density).toInt()
-        ContributionRenderer.render(cells, w, h, isDark(), WidgetStore.spanWeeks(this))?.let {
+        ContributionRenderer.render(
+            cells, w, h, isDark(), WidgetStore.spanWeeks(this),
+            WidgetStore.cornerPct(this) / 100f, WidgetStore.strokePct(this) / 100f
+        )?.let {
             WidgetStore.saveBitmap(this, it)
             preview.setImageBitmap(it)
         }
