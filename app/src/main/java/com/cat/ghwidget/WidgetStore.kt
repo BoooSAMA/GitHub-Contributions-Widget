@@ -16,6 +16,12 @@ object WidgetStore {
     private const val KEY_SPAN = "span_weeks"
     private const val KEY_CORNER = "corner_pct"
     private const val KEY_STROKE = "stroke_pct"
+    private const val KEY_BG_MODE = "bg_mode"
+    private const val KEY_BG_COLOR = "bg_color"
+    private const val KEY_BG_ALPHA = "bg_alpha"
+    private const val KEY_MARGIN = "margin_pct"
+    private const val KEY_CONTRAST = "contrast_pct"
+    private const val KEY_GLASS = "glass_enabled"
     private const val CACHE_FILE = "gh_graph.png"
 
     const val THEME_SYSTEM = 0
@@ -24,6 +30,11 @@ object WidgetStore {
 
     /** 小组件显示跨度（周）：0=按窗口尺寸自动适配 */
     const val SPAN_AUTO = 0
+
+    /** 卡牌底色模式：跟随主题 GitHub 色 / 纯透明 / 固定色+透明度 */
+    const val BG_AUTO = 0
+    const val BG_TRANS = 1
+    const val BG_FIXED = 2
 
     fun themeMode(ctx: Context): Int =
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_THEME, THEME_SYSTEM)
@@ -55,6 +66,75 @@ object WidgetStore {
     fun setStrokePct(ctx: Context, pct: Int) {
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit().putInt(KEY_STROKE, pct).apply()
+    }
+
+    fun bgMode(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_BG_MODE, BG_AUTO)
+
+    fun setBgMode(ctx: Context, mode: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_BG_MODE, mode).apply()
+    }
+
+    fun bgColor(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_BG_COLOR, 0xFF161B22.toInt())
+
+    fun setBgColor(ctx: Context, color: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_BG_COLOR, color).apply()
+    }
+
+    fun bgAlpha(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_BG_ALPHA, 100)
+
+    fun setBgAlpha(ctx: Context, pct: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_BG_ALPHA, pct).apply()
+    }
+
+    fun marginPct(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_MARGIN, 4)
+
+    fun setMarginPct(ctx: Context, pct: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_MARGIN, pct).apply()
+    }
+
+    fun contrastPct(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_CONTRAST, 0)
+
+    fun setContrastPct(ctx: Context, pct: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_CONTRAST, pct).apply()
+    }
+
+    fun glassEnabled(ctx: Context): Boolean =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_GLASS, true)
+
+    fun setGlassEnabled(ctx: Context, on: Boolean) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putBoolean(KEY_GLASS, on).apply()
+    }
+
+    /** 汇总全部客制化设置为渲染配置；dark 由调用方按当前主题传入 */
+    fun renderConfig(ctx: Context, dark: Boolean): RenderConfig {
+        val mode = bgMode(ctx)
+        val bg: Int? = when (mode) {
+            BG_TRANS -> 0x00000000
+            BG_FIXED -> {
+                val a = (bgAlpha(ctx).coerceIn(0, 100)) * 255 / 100
+                (bgColor(ctx) and 0x00FFFFFF) or (a shl 24)
+            }
+            else -> null
+        }
+        return RenderConfig(
+            spanWeeks = spanWeeks(ctx),
+            cornerPct = cornerPct(ctx) / 100f,
+            strokePct = strokePct(ctx) / 100f,
+            contrast = contrastPct(ctx) / 100f,
+            marginPct = marginPct(ctx) / 100f,
+            cardBg = bg
+        )
     }
 
     fun username(ctx: Context): String =

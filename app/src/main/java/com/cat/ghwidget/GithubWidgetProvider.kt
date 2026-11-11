@@ -53,13 +53,12 @@ class GithubWidgetProvider : AppWidgetProvider() {
             // 1) 按当前尺寸用缓存数据立刻渲染
             val (wPx, hPx) = widgetSizePx(context, appWidgetManager, appWidgetId)
             val dark = isDark(context)
+            val cfg = WidgetStore.renderConfig(context, dark)
+            views.setInt(R.id.widget_root, "setBackgroundResource", if (WidgetStore.glassEnabled(context)) R.drawable.widget_background else 0)
             val cachedCells = WidgetStore.loadCells(context)
             val cacheBm = WidgetStore.loadBitmap(context)
 
-            val immediate = ContributionRenderer.render(
-                cachedCells, wPx, hPx, dark, WidgetStore.spanWeeks(context),
-                WidgetStore.cornerPct(context) / 100f, WidgetStore.strokePct(context) / 100f
-            ) ?: cacheBm
+            val immediate = ContributionRenderer.render(cachedCells, wPx, hPx, dark, cfg) ?: cacheBm
             if (immediate != null) {
                 views.setImageViewBitmap(R.id.img_graph, immediate)
                 views.setViewVisibility(R.id.tv_status, android.view.View.GONE)
@@ -74,10 +73,7 @@ class GithubWidgetProvider : AppWidgetProvider() {
                     ?.takeIf { it.isNotEmpty() && it.size >= cachedCells.size }
                     ?: return@thread // 网络失败或数据更旧 → 保留缓存图
                 WidgetStore.saveCells(context, cells)
-                val fresh = ContributionRenderer.render(
-                    cells, wPx, hPx, dark, WidgetStore.spanWeeks(context),
-                    WidgetStore.cornerPct(context) / 100f, WidgetStore.strokePct(context) / 100f
-                ) ?: return@thread
+                val fresh = ContributionRenderer.render(cells, wPx, hPx, dark, cfg) ?: return@thread
                 WidgetStore.saveBitmap(context, fresh)
                 main.post {
                     val v = RemoteViews(context.packageName, R.layout.widget_github)
@@ -88,7 +84,7 @@ class GithubWidgetProvider : AppWidgetProvider() {
             }
         }
 
-        /** 用 options 里的 min/max 尺寸（dp）估算可用绘制像素，扣除布局 6dp padding */
+        /** 用 options 里的 min/max 尺寸（dp）估算可用绘制像素（布局 padding 已归零） */
         private fun widgetSizePx(context: Context, mgr: AppWidgetManager, id: Int): Pair<Int, Int> {
             val o = mgr.getAppWidgetOptions(id)
             var wDp = o.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0)
@@ -96,10 +92,9 @@ class GithubWidgetProvider : AppWidgetProvider() {
             // 横屏时系统把 min/max 交换，取 max_width 作宽度兜底
             if (wDp <= 0) wDp = o.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, 250)
             val density = context.resources.displayMetrics.density
-            val pad = (6 * density).toInt()
             return Pair(
-                (wDp * density).toInt().coerceAtLeast(60) - 2 * pad,
-                (hDp * density).toInt().coerceAtLeast(60) - 2 * pad
+                (wDp * density).toInt().coerceAtLeast(60),
+                (hDp * density).toInt().coerceAtLeast(60)
             )
         }
 
