@@ -37,3 +37,4 @@ captures/
 .DS_Store
 *.log
 *.apk
+.cortexkit/
