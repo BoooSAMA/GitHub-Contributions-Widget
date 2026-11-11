@@ -56,7 +56,7 @@ class GithubWidgetProvider : AppWidgetProvider() {
             val cachedCells = WidgetStore.loadCells(context)
             val cacheBm = WidgetStore.loadBitmap(context)
 
-            val immediate = ContributionRenderer.render(cachedCells, wPx, hPx, dark) ?: cacheBm
+            val immediate = ContributionRenderer.render(cachedCells, wPx, hPx, dark, WidgetStore.spanWeeks(context)) ?: cacheBm
             if (immediate != null) {
                 views.setImageViewBitmap(R.id.img_graph, immediate)
                 views.setViewVisibility(R.id.tv_status, android.view.View.GONE)
@@ -71,7 +71,7 @@ class GithubWidgetProvider : AppWidgetProvider() {
                     ?.takeIf { it.isNotEmpty() && it.size >= cachedCells.size }
                     ?: return@thread // 网络失败或数据更旧 → 保留缓存图
                 WidgetStore.saveCells(context, cells)
-                val fresh = ContributionRenderer.render(cells, wPx, hPx, dark) ?: return@thread
+                val fresh = ContributionRenderer.render(cells, wPx, hPx, dark, WidgetStore.spanWeeks(context)) ?: return@thread
                 WidgetStore.saveBitmap(context, fresh)
                 main.post {
                     val v = RemoteViews(context.packageName, R.layout.widget_github)
@@ -97,8 +97,11 @@ class GithubWidgetProvider : AppWidgetProvider() {
             )
         }
 
-        private fun isDark(context: Context): Boolean =
-            (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+        private fun isDark(context: Context): Boolean = when (WidgetStore.themeMode(context)) {
+            WidgetStore.THEME_LIGHT -> false
+            WidgetStore.THEME_DARK -> true
+            else -> (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
                 Configuration.UI_MODE_NIGHT_YES
+        }
     }
 }

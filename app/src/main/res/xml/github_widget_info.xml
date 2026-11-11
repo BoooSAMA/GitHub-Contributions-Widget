@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:minWidth="250dp"
     android:minHeight="110dp"
+    android:targetCellWidth="5"
+    android:targetCellHeight="2"
     android:updatePeriodMillis="21600000"
     android:initialLayout="@layout/widget_github"
     android:previewLayout="@layout/widget_github"

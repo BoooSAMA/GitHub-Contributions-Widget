@@ -15,17 +15,30 @@ object ContributionRenderer {
     private val LIGHT = listOf("EBEDF0", "9BE9A8", "40C463", "30A14E", "216E39").map { Color.parseColor("#$it") }
     private val DARK = listOf("161B22", "0E4429", "006D32", "26A641", "39D353").map { Color.parseColor("#$it") }
 
-    /** 渲染 cells（按日期升序）到 w×h 的透明背景 Bitmap */
-    fun render(cells: List<GithubGraphFetcher.Cell>, w: Int, h: Int, dark: Boolean): Bitmap? {
+    /** 渲染 cells（按日期升序）到 w×h 的透明背景 Bitmap；spanWeeks=0 按宽高比自动适配显示最近列，>0 固定周数 */
+    fun render(cells: List<GithubGraphFetcher.Cell>, w: Int, h: Int, dark: Boolean, spanWeeks: Int = 0): Bitmap? {
         if (cells.isEmpty() || w < 20 || h < 20) return null
         val palette = if (dark) DARK else LIGHT
         val rows = 7
-        val cols = (cells.size + rows - 1) / rows
         val gapRatio = 0.25f
+        val totalCols = (cells.size + rows - 1) / rows
 
-        // 解方程让 52列×7行 恰好铺满可用空间
+        // 高度铺满定单格尺寸，推出宽度能容纳的列数
+        val sizeH = (h / (rows + (rows - 1) * gapRatio))
+        val gapH = sizeH * gapRatio
+        val colsFit = ((w + gapH) / (sizeH + gapH)).toInt().coerceAtLeast(3)
+        val displayCols = if (spanWeeks <= 0) minOf(totalCols, colsFit) else minOf(totalCols, spanWeeks)
+        if (displayCols < 1) return null
+
+        // 取尾部（最新）的整列数据：起点对齐列边界
+        val end = cells.size
+        var start = end - displayCols * rows
+        start = ((start + rows - 1) / rows) * rows
+        if (start >= end) start = end - rows
+        val sub = cells.subList(start, end)
+
         val size = minOf(
-            w / (cols + (cols - 1) * gapRatio),
+            w / (displayCols + (displayCols - 1) * gapRatio),
             h / (rows + (rows - 1) * gapRatio)
         ).toInt().coerceAtLeast(2)
         val gap = (size * gapRatio).toInt().coerceAtLeast(1)
@@ -35,14 +48,18 @@ object ContributionRenderer {
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
         val radius = size * 0.22f
 
-        for ((i, cell) in cells.withIndex()) {
+        val gridW = displayCols * size + (displayCols - 1) * gap
+        val gridH = rows * size + (rows - 1) * gap
+        val ox = ((w - gridW) / 2f)
+        val oy = ((h - gridH) / 2f)
+
+        for ((i, cell) in sub.withIndex()) {
             val col = i / rows
             val row = i % rows
-            val x = col * (size + gap)
-            val y = row * (size + gap)
-            if (x + size > w) break
+            val x = ox + col * (size + gap)
+            val y = oy + row * (size + gap)
             paint.color = palette[cell.level.coerceIn(0, palette.size - 1)]
-            canvas.drawRoundRect(x.toFloat(), y.toFloat(), (x + size).toFloat(), (y + size).toFloat(), radius, radius, paint)
+            canvas.drawRoundRect(x, y, x + size, y + size, radius, radius, paint)
         }
         return bitmap
     }

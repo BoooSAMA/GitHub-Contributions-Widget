@@ -12,7 +12,32 @@ object WidgetStore {
     private const val PREFS = "gh_widget"
     private const val KEY_CELLS = "cells"
     private const val KEY_USER = "username"
+    private const val KEY_THEME = "theme_mode"
+    private const val KEY_SPAN = "span_weeks"
     private const val CACHE_FILE = "gh_graph.png"
+
+    const val THEME_SYSTEM = 0
+    const val THEME_LIGHT = 1
+    const val THEME_DARK = 2
+
+    /** 小组件显示跨度（周）：0=按窗口尺寸自动适配 */
+    const val SPAN_AUTO = 0
+
+    fun themeMode(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_THEME, THEME_SYSTEM)
+
+    fun setThemeMode(ctx: Context, mode: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_THEME, mode).apply()
+    }
+
+    fun spanWeeks(ctx: Context): Int =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(KEY_SPAN, SPAN_AUTO)
+
+    fun setSpanWeeks(ctx: Context, weeks: Int) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putInt(KEY_SPAN, weeks).apply()
+    }
 
     fun username(ctx: Context): String =
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)

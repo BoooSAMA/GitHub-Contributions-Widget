@@ -9,6 +9,7 @@
     <color name="on_primary">#FFFFFF</color>
     <color name="error">#F85149</color>
     <color name="success">#3FB950</color>
+    <color name="pill_active_bg">#333FB950</color>
 
     <!-- ===== 小组件卡片 ===== -->
     <color name="widget_bg">#521E1E1E</color>
