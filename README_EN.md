@@ -11,10 +11,26 @@ An **ultra-lightweight** native Android home-screen widget (AppWidget) that pins
 
 ## Features
 
-- 52-week × 7-row contribution heatmap on your home screen
+- 52-week × 7-row contribution heatmap on your home screen (or a fixed span: last half-year / quarter)
 - Auto-refresh every 6 hours; redraws on widget resize
 - Shows the last cached image when offline — no blank flash
 - Custom color palettes (edit `LIGHT` / `DARK` arrays in `ContributionRenderer.kt`)
+
+## Appearance Customization (all in-app, with live preview)
+
+| Setting | Range | Notes |
+|---------|-------|-------|
+| Theme mode | Follow system / Light / Dark | Applies to both app and widget |
+| Time span | Auto / Full year / Half year / Quarter | Auto fits the most recent weeks to the widget size |
+| Card corner radius | 0% – 30% | 0 = square corners |
+| Empty-tile stroke | 0% – 20% | 0 = no stroke |
+| Card background | Theme / Transparent / White / Off-white / Black / Charcoal | |
+| Background opacity | 0% – 100% | Semi-transparent card shows the wallpaper through |
+| Card margin | 0% – 15% | 0% = card fills the whole widget area |
+| Empty-tile contrast | 0% – 100% | Improves visibility of empty and low-contribution tiles |
+| Frosted glass frame | Show / Hide | |
+| Month label color | Theme / Gray / Slate / White / Black | |
+| Month label size | 60% – 200% | Relative to tile size |
 
 ## Installation
 
@@ -55,10 +71,10 @@ Open "GitHub 绿墙" → enter your username → tap "Preview & Apply" → the g
 ```
 app/src/main/java/com/cat/ghwidget/
 ├── GithubGraphFetcher.kt    # OkHttp fetch + regex parse of data-date/data-level
-├── ContributionRenderer.kt  # Canvas rounded-tile rendering, light/dark palettes
-├── WidgetStore.kt           # cells in SharedPreferences, last bitmap in cache
+├── ContributionRenderer.kt  # Canvas rounded-tile rendering, light/dark palettes + RenderConfig options
+├── WidgetStore.kt           # cells and all customization settings in SharedPreferences, last bitmap in cache
 ├── GithubWidgetProvider.kt  # widget entry: instant cached render → async refresh
-└── MainActivity.kt          # install info page
+└── MainActivity.kt          # config page: username + all appearance options
 ```
 
 Sole third-party dependency: `com.squareup.okhttp3:okhttp:4.12.0`.

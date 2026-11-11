@@ -11,10 +11,26 @@
 
 ## 能做什么
 
-- 桌面显示 52 周 × 7 格的贡献热力图
+- 桌面显示 52 周 × 7 格的贡献热力图（或按时间跨度档位显示最近半年 / 三个月）
 - 每 6 小时自动刷新；拖动缩放小组件时按新尺寸自动重绘
 - 无网时显示上次缓存画面，不闪白屏
 - 主题色板可自定义（改 `ContributionRenderer.kt` 里的 `LIGHT` / `DARK` 数组）
+
+## 外观客制化（全部在 app 内完成，即时预览）
+
+| 设置项 | 范围 | 说明 |
+|--------|------|------|
+| 主题模式 | 跟随系统 / 浅色 / 深色 | app 与小组件色板同步 |
+| 时间跨度 | 自动适配 / 全年 / 半年 / 近三月 | 自动档按窗口宽高比取最近 N 周铺满 |
+| 卡片圆角 | 0% ~ 30% | 0 = 直角 |
+| 空格子描边 | 0% ~ 20% | 0 = 不描边 |
+| 卡牌底色 | 跟随主题 / 纯透明 / 纯白 / 浅灰 / 纯黑 / 炭黑 | |
+| 底色透明度 | 0% ~ 100% | 半透明卡牌透出壁纸 |
+| 卡牌边距 | 0% ~ 15% | 0% = 卡牌铺满整个小组件区域 |
+| 空格子对比度 | 0% ~ 100% | 提升空格子与低贡献格子（1~3 次）的可辨度 |
+| 毛玻璃底框 | 显示 / 隐藏 | |
+| 月份文字颜色 | 跟随主题 / 中灰 / 石板灰 / 白 / 黑 | |
+| 月份字号 | 60% ~ 200% | 相对格子尺寸 |
 
 ## 安装方式
 
@@ -55,10 +71,10 @@ adb install app/build/outputs/apk/release/app-release.apk
 ```
 app/src/main/java/com/cat/ghwidget/
 ├── GithubGraphFetcher.kt    # OkHttp 免登录抓取 + 正则解析 data-date/data-level
-├── ContributionRenderer.kt  # Canvas 圆角方块绘制，浅/深双主题色板
-├── WidgetStore.kt           # 数据存 SharedPreferences，最近渲染图存缓存
+├── ContributionRenderer.kt  # Canvas 圆角方块绘制，浅/深双主题色板 + RenderConfig 客制化参数
+├── WidgetStore.kt           # 数据与全部客制化设置存 SharedPreferences，最近渲染图存缓存
 ├── GithubWidgetProvider.kt  # 组件入口：缓存秒显 → 后台刷新 → 主线程更新
-└── MainActivity.kt          # 安装说明页
+└── MainActivity.kt          # 配置页：用户名 + 全部外观客制化
 ```
 
 唯一第三方依赖：`com.squareup.okhttp3:okhttp:4.12.0`。
