@@ -1,5 +1,9 @@
 # GitHub 绿墙小组件 · GitHub Contributions Widget
 
+English version: [README_EN.md](README_EN.md)
+
+-----------------------------------------------------
+
 一个**极致轻量**的 Android 原生桌面小组件（AppWidget），把 GitHub 贡献热力图（绿墙）常驻到你的桌面。
 
 - 📦 **release 包仅 ~300KB**（远小于常见的 2~3MB）
@@ -141,7 +145,3 @@ GithubWidgetProvider ──RemoteViews──► 桌面小组件（ImageView 显�
 ```
 
 唯一第三方依赖：`com.squareup.okhttp3:okhttp:4.12.0`。
-
----
-
-English version: [README_EN.md](README_EN.md)
